@@ -30,4 +30,21 @@ class UserClient
             return json_decode($response->getBody()->getContents());
         }
     }
+
+    /**
+     * Analytics
+     */
+    public function analytics($userId, $formParams)
+    {
+        $response = $this->client->request('PUT', '/api/v1/analytics', [
+            'form_params' => $formParams,
+            'headers' => [
+                'Content-Type' => 'application/x-www-form-urlencoded',
+                'X-Consumer-Custom-ID' => $userId
+            ]
+        ]);
+        if ($response->getStatusCode() === self::STATUS_OK) {
+            return json_decode($response->getBody()->getContents());
+        }
+    }
 }
