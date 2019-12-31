@@ -21,12 +21,13 @@ class UserClient
      */
     public function getInfo($userId)
     {
-        $response = $this->client->request('GET', '/api/v1/auth/me', [
+        $response = $this->client->request('GET', '/api/auth/me', [
             'headers' => [
                 'X-Consumer-Custom-ID' => $userId
             ]
         ]);
-        if ($response->getStatusCode() === self::STATUS_OK) {
+        $statusCode = $response->getStatusCode();
+        if ($statusCode >= 200 && $statusCode < 400) {
             return json_decode($response->getBody()->getContents());
         }
     }
@@ -36,14 +37,15 @@ class UserClient
      */
     public function analytics($userId, $formParams)
     {
-        $response = $this->client->request('PUT', '/api/v1/analytics', [
+        $response = $this->client->request('PUT', '/api/analytics', [
             'form_params' => $formParams,
             'headers' => [
                 'Content-Type' => 'application/x-www-form-urlencoded',
                 'X-Consumer-Custom-ID' => $userId
             ]
         ]);
-        if ($response->getStatusCode() === self::STATUS_OK) {
+        $statusCode = $response->getStatusCode();
+        if ($statusCode >= 200 && $statusCode < 400) {
             return json_decode($response->getBody()->getContents());
         }
     }
